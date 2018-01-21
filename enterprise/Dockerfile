@@ -39,8 +39,10 @@ RUN apt-get update && apt-get install -y wget sudo \
     && rm -fR ${SPLUNK_HOME}/etc \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME} \
     && chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_BACKUP_DEFAULT_ETC} \
-    && rm -rf /var/lib/apt/lists/*
-
+    && rm -rf /var/lib/apt/lists/* \
+    && sed -i -e 's/minFreeSpace = 5000/minFreeSpace = 500/' /var/opt/splunk/etc/system/default/server.conf \
+    && sed -i -e 's/enableSplunkWebSSL = false/enableSplunkWebSSL = true/' /var/opt/splunk/etc/system/default/web.conf
+    
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod +x /sbin/entrypoint.sh
 
